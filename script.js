@@ -1,23 +1,9 @@
-const jwt = require('jsonwebtoken');
-const SECRET_KEY = 'sanya';
-const encrypt = (payload) => {
-  // encrypt the payload and return token
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' }); // optional expiry
-  return token;
-}
+const { encrypt, decrypt } = require('./utils/jwtUtils');
 
-const decrypt = (token) => {
-  // return decoded payload
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    return decoded;
-  } catch (err) {
-    console.error('Token verification failed:', err.message);
-    return null;
-  }
-}
+const myPayload = { userId: 123, role: 'therapist' };
 
-module.exports = {
-  encrypt,
-  decrypt
-}
+const encryptedToken = encrypt(myPayload);
+console.log('Encrypted Token:', encryptedToken);
+
+const decryptedPayload = decrypt(encryptedToken);
+console.log('Decrypted Payload:', decryptedPayload); 
